@@ -1,15 +1,21 @@
 const express = require("express");
 const app = express();
 
-app.use("/text", (req, res) => {
-  res.send("hello from text");
+app.post("/user", (req, res) => {
+  res.send("hello ");
 });
-app.use("/vansh", (req, res) => {
-  res.send("hello from vansh masan");
+app.use("/user", (req, res) => {
+  res.send("hello  dashboard");
 });
-app.use("/", (req, res) => {
-  res.send("hello from dashboard");
+app.get("/user", (req, res) => {
+  res.send({ firstname: "vansh", lastname: "masan", age: "22" });
 });
+app.delete("/user", (req, res) => {
+  res.send("user deleted");
+});
+// app.use("/", (req, res) => {
+//   res.send("hello  dashboard");
+// });
 
 app.listen(3000, () => {
   console.log("server started at port 3000");
