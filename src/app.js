@@ -1,21 +1,24 @@
 const express = require("express");
 const app = express();
 
-app.post("/user", (req, res) => {
-  res.send("hello ");
-});
-app.use("/user", (req, res) => {
-  res.send("hello  dashboard");
-});
-app.get("/user", (req, res) => {
-  res.send({ firstname: "vansh", lastname: "masan", age: "22" });
-});
-app.delete("/user", (req, res) => {
-  res.send("user deleted");
-});
-// app.use("/", (req, res) => {
-//   res.send("hello  dashboard");
-// });
+app.get(
+  "/user/:userId",
+  (req, res, next) => {
+    console.log(req.param);
+    console.log("First middleware");
+    //res.send("vansh masan 1");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Second middleware");
+    //res.send("vansh masan 2");
+    next();
+  },
+  (req, res) => {
+    console.log("third middleware");
+    res.send("vansh masan 3");
+  }
+);
 
 app.listen(3000, () => {
   console.log("server started at port 3000");
