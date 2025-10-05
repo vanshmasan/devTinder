@@ -1,25 +1,32 @@
 const express = require("express");
+const connectDb = require("./config/database");
+const User = require("./model/user");
 const app = express();
 
-app.get(
-  "/user/:userId",
-  (req, res, next) => {
-    console.log(req.param);
-    console.log("First middleware");
-    //res.send("vansh masan 1");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Second middleware");
-    //res.send("vansh masan 2");
-    next();
-  },
-  (req, res) => {
-    console.log("third middleware");
-    res.send("vansh masan 3");
-  }
-);
+app.post("/signup", async (req, res) => {
+  const user = new User({
+    firstname: "shanu",
+    lastname: "masan",
+    emailId: "shanumasanhnd@gmail.com",
+    password: "12456",
+  });
 
-app.listen(3000, () => {
-  console.log("server started at port 3000");
+  try {
+    await user.save();
+    res.send("user registered successfully");
+  } catch (err) {
+    res.status(400).send("error in registering user");
+  }
 });
+
+connectDb()
+  .then(() => {
+    console.log("Database connect successfully");
+
+    app.listen(3000, () => {
+      console.log("server started at port 3000");
+    });
+  })
+  .catch((err) => {
+    console.log("Database not connected");
+  });
